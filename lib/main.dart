@@ -15,7 +15,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
         accentColor: Colors.amber,
-        fontFamily:'Quicksand'
+        fontFamily:'Quicksand',
+          textTheme:ThemeData.light().textTheme.copyWith(
+          title:TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 18,
+            fontWeight:FontWeight.bold
+          ),
+            button: TextStyle(color: Colors.white)
+
+      )
       ),
       home: MyHomePage(),
     );
@@ -38,11 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  void addNewTransaction({@required String title, @required double txAmount}) {
+  void addNewTransaction({@required String title, @required double txAmount,@required DateTime selectedDate}) {
     var newTrans = Transaction(
         reason: title,
         amount: txAmount,
-        date: DateTime.now(),
+        date: selectedDate==null? DateTime.now():selectedDate,
         id: DateTime.now().toIso8601String());
 
     setState(() {
@@ -50,6 +59,14 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _deleteTranasctions(@required String id)
+  {
+    setState(() {
+      _userTransactionList.removeWhere((tx){
+        return tx.id==id;
+      });
+    });
+  }
   void _startNewActionTransc(BuildContext txt) {
     showModalBottomSheet(
         context: txt,
@@ -87,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 width: double.infinity,
                 child: Chart(_recentTransactions),
               ),
-              TransactionList(_userTransactionList),
+              TransactionList(_userTransactionList,_deleteTranasctions),
             ],
           ),
       ),

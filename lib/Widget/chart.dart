@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_expense_tracker/Widget/chart_bar.dart';
 import 'package:intl/intl.dart';
+
 import '../Model/Transaction.dart';
 
 class Chart extends StatelessWidget {
@@ -27,7 +26,7 @@ class Chart extends StatelessWidget {
           totalAmount.toString());
 
       return {'day': DateFormat.E().format(weekDay), 'amount': totalAmount};
-    });
+    }).reversed.toList();
   }
 
   double get totalSpending {
